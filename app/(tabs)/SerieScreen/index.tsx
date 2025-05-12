@@ -5,25 +5,23 @@ import { useRouter } from 'expo-router';
 
 const { width } = Dimensions.get('window');
 
+type Series = '1' | '2' | '3';
+
+const SERIES_GAME_SCREENS: Record<Series, string> = {
+  '1': '../../../(tabs)/Jogo1Screen/',
+  '2': '../../../(tabs)/Jogo2Screen/',
+  '3': '../../../(tabs)/Jogo3Screen/',
+} as const;
+
 const SerieScreen: React.FC = () => {
     const router = useRouter();
   
-    const handleSelectSerie = (serie: string) => {
-      router.push({
-        pathname: '../../(tabs)/JogoScreen/',
+    const handleSelectSerie = (serie: Series) => {
+      router.navigate({
+        pathname: `/${SERIES_GAME_SCREENS[serie]}` as never,
         params: { serie },
       });
     };
-// const StartScreen: React.FC = () => {
-//   const router = useRouter();
-
-//   const handleStart = () => {
-//     router.push('/(tabs)/SerieScreen/index');
-//   };
-
-//   const handleHistory = () => {
-//     router.push('/(tabs)/HistoricoScreen/index');
-//   };
 
   return (
     <ImageBackground
