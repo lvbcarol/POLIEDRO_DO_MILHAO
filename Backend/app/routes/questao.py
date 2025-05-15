@@ -68,11 +68,11 @@ def editar_questao():
     alternativaD = data.get("nova_alternativaD")
     resposta_correta = data.get("nova_resposta_correta")
     dica = data.get("nova_dica")
-    valor = data.get("nova_valor")
+    novo_valor = data.get("nova_valor")
     nivel_dificuldade = data.get("novo_nivel_dificuldade")
 
     valores = []
-    for valor in [enunciado, alternativaA, alternativaB, alternativaC, alternativaD, resposta_correta, dica, valor, nivel_dificuldade, id_questao]:
+    for valor in [enunciado, alternativaA, alternativaB, alternativaC, alternativaD, resposta_correta, dica, novo_valor, nivel_dificuldade, id_questao]:
         if valor is not None:
             valores.append(valor)
     if not any(valores):
@@ -84,21 +84,24 @@ def editar_questao():
     db = get_db()
     updates = tuple(valores)
     try:
-        cursor = db.execute(f"""
+        print(updates)
+        sql = f"""
             UPDATE questoes 
-            SET (
-                {'enunciado = ?,' if enunciado is not None else ''} 
-                {'alternativaA = ?,' if alternativaA is not None else ''}
+            SET 
+                {'enunciado = ?,'if enunciado is not None else ''} 
+                {'alternativaA = ?,'if alternativaA is not None else ''}
                 {'alternativaB = ?,'if alternativaB is not None else ''}
-                {'alternativaC = ?, 'if alternativaC is not None else ''}
+                {'alternativaC = ?,'if alternativaC is not None else ''}
                 {'alternativaD = ?,'if alternativaD is not None else ''}
-                {'resposta_correta = ?,' if resposta_correta is not None else ''}
+                {'resposta_correta = ?,'if resposta_correta is not None else ''}
                 {'dica = ?,'if dica is not None else ''} 
-                {'valor = ?,'if valor is not None else ''} 
-                {'nivel_dificuldade = ?,'if nivel_dificuldade is not None else ''}
-                )
+                {'valor = ?,'if novo_valor is not None else ''} 
+                {'nivel_dificuldade = ?,'if nivel_dificuldade is not None else ''}   
             WHERE ID_questao = ?
-        """, updates)
+        """
+        index = sql.rfind(",")
+        sql = sql[:index] + sql[index + 1:]
+        cursor = db.execute(sql, updates)
         db.commit()
         new_questao_id = cursor.lastrowid
         return jsonify({"message": "Questão adicionada com sucesso!", "ID_questao": new_questao_id}), 201
