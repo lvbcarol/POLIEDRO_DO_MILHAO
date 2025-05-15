@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, ImageBackground,} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, ImageBackground } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 
@@ -8,56 +8,59 @@ export default function HistoricoScreen() {
 
   return (
     <ImageBackground
-    source={require('../../../assets/images/TelaVermelha.png')}
+      source={require('../../../assets/images/TelaVermelha.png')}
       style={styles.container}
       resizeMode="cover"
     >
-      {/* Seta de voltar */}
+      {/* Ícones superiores */}
       <TouchableOpacity style={styles.backIcon} onPress={() => router.push('../../../(tabs)/HomeScreen/')}>
         <Ionicons name="arrow-back" size={30} color="white" />
       </TouchableOpacity>
 
-      {/* Ícone de som */}
       <TouchableOpacity style={styles.soundIcon}>
         <Ionicons name="volume-high" size={30} color="white" />
       </TouchableOpacity>
 
-      {/* Cabeçalho */}
+      {/* Conteúdo principal com overlay */}
       <View style={styles.overlay}>
+        {/* Cabeçalho */}
         <View style={styles.titleRow}>
-            <Image source={require('../../../assets/images/Coin.png')} style={styles.coin}/>
-            <Text style={styles.title}>POLIEDRO{"\n"}DO MILHÃO</Text>  
+          <Image source={require('../../../assets/images/Coin.png')} style={styles.coin} />
+          <Text style={styles.title}>POLIEDRO{"\n"}DO MILHÃO</Text>
         </View>
+
+        {/* Título da tela */}
         <Text style={styles.historyTitle}>HISTÓRICO</Text>
 
+        {/* Bloco com tentativas */}
         <View style={styles.historyBox}>
-        {/* Bolinhas topo */}
-        <View style={styles.bullets}>
-          {Array.from({ length: 20 }).map((_, index) => (
-            <View key={index} style={styles.bullet} />
-          ))}
-        </View>
+          {/* Bolinhas superiores */}
+          <View style={styles.bullets}>
+            {Array.from({ length: 20 }).map((_, index) => (
+              <View key={index} style={styles.bullet} />
+            ))}
+          </View>
 
-        <View style={styles.attemptsBox}>
-          <ScrollView>
-            <Text style={styles.attemptText}>Tentativa 1: R$ 500.000,00</Text>
-            <View style={styles.separator}/>
-            <Text style={styles.attemptText}>Tentativa 2: R$ 100.000,00</Text>
-            <View style={styles.separator}/>
-            <Text style={styles.attemptText}>Tentativa 3: R$ 50.000,00</Text>
-            {/* Adicione mais tentativas conforme necessário */}
-          </ScrollView>
-        </View>
+          {/* Tentativas */}
+          <View style={styles.attemptsBox}>
+            <ScrollView>
+              <Text style={styles.attemptText}>Tentativa 1: R$ 500.000,00</Text>
+              <View style={styles.separator} />
+              <Text style={styles.attemptText}>Tentativa 2: R$ 100.000,00</Text>
+              <View style={styles.separator} />
+              <Text style={styles.attemptText}>Tentativa 3: R$ 50.000,00</Text>
+              {/* Adicione mais tentativas conforme necessário */}
+            </ScrollView>
+          </View>
 
-        {/* Bolinhas base */}
-        <View style={styles.bullets}>
-          {Array.from({ length: 20 }).map((_, index) => (
-            <View key={index} style={styles.bullet} />
-          ))}
+          {/* Bolinhas inferiores */}
+          <View style={styles.bullets}>
+            {Array.from({ length: 20 }).map((_, index) => (
+              <View key={index} style={styles.bullet} />
+            ))}
+          </View>
         </View>
       </View>
-      </View>
-
     </ImageBackground>
   );
 }
@@ -65,15 +68,15 @@ export default function HistoricoScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: 'auto',
-    height: 'auto',
+    width: '100%',
+    height: '100%',
   },
   overlay: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 20,
-    backgroundColor: 'rgba(0, 0, 0, 0.4)', // leve escurecimento para contraste
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
   },
   backIcon: {
     position: 'absolute',
@@ -87,35 +90,28 @@ const styles = StyleSheet.create({
     right: 20,
     zIndex: 10,
   },
-//   header: {
-//     alignItems: 'center',
-//     marginBottom: 20,
-//   },
+  titleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   coin: {
     width: 80,
     height: 80,
     resizeMode: 'contain',
     marginBottom: 150,
     marginRight: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   title: {
-    color: 'gold',
-    fontSize: 30,
+    fontSize: 28,
     fontWeight: 'bold',
     textAlign: 'center',
+    color: '#FFD700',
     marginBottom: 150,
-  },
-  titleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   historyTitle: {
     fontSize: 20,
-    //fontWeight: 'bold',
-    color: 'gold',
+    color: '#FFD700',
     textAlign: 'center',
     marginBottom: 5,
   },
@@ -136,11 +132,11 @@ const styles = StyleSheet.create({
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: 'gold',
+    backgroundColor: '#FFD700',
     margin: 3,
   },
   attemptsBox: {
-    backgroundColor: 'white',
+    backgroundColor: '#FFF',
     width: '90%',
     borderRadius: 5,
     padding: 10,

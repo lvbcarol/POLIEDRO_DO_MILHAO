@@ -1,12 +1,11 @@
-import { Image } from 'react-native';
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions, ImageBackground } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image, ImageBackground, useWindowDimensions, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 
-const { width } = Dimensions.get('window');
-
-const StartScreen: React.FC = () => {
+export default function StartScreen() {
   const router = useRouter();
+  const { width } = useWindowDimensions();
 
   const handleStart = () => {
     router.push('../../../(tabs)/SerieScreen');
@@ -17,31 +16,49 @@ const StartScreen: React.FC = () => {
   };
 
   return (
-    <ImageBackground
-      source={require('../../../assets/images/TelaAzul.png')} 
-      style={styles.background}
-      resizeMode="cover"
-    >
-      <View style={styles.overlay}>
-        <Text style={styles.title}>POLIEDRO{"\n"}DO MILHÃO</Text>
-            <Image source={require('../../../assets/images/Coin.png')} style={styles.coin} />  
-                
-            <Image source={require('../../../assets/images/Cortina1.png')} style={styles.Image}/>
-
-        <TouchableOpacity style={styles.button} onPress={handleStart}>
-          <Text style={styles.buttonText}>Jogar</Text>
+    <ScrollView contentContainerStyle={styles.scroll}>
+      <ImageBackground
+        source={require('../../../assets/images/TelaAzul.png')}
+        style={styles.container}
+        resizeMode="cover"
+      >
+        {/* Seta de voltar */}
+        <TouchableOpacity style={[styles.backIcon, width > 768 && styles.backIconDesktop]} onPress={() => router.push('/(tabs)')}>
+          <Ionicons name="arrow-back" size={30} color="white" />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={handleHistory}>
-          <Text style={styles.buttonText}>Histórico</Text>
+        {/* Ícone de som */}
+        <TouchableOpacity style={[styles.soundIcon, width > 768 && styles.soundIconDesktop]}>
+          <Ionicons name="volume-high" size={30} color="white" />
         </TouchableOpacity>
-      </View>
-    </ImageBackground>
+
+        <View style={[styles.overlay, width > 768 && styles.overlayDesktop]}>
+          <Text style={[styles.title, width > 768 && styles.titleDesktop]}>
+            POLIEDRO{"\n"}DO MILHÃO
+          </Text>
+
+          <Image source={require('../../../assets/images/Coin.png')} style={styles.coin} />
+
+          {/* <Image source={require('../../../assets/images/Cortina1.png')} style={styles.Image} /> */}
+
+          <TouchableOpacity style={[styles.button, width > 768 && styles.buttonDesktop]} onPress={handleStart}>
+            <Text style={styles.buttonText}>Jogar</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={[styles.button, width > 768 && styles.buttonDesktop]} onPress={handleHistory}>
+            <Text style={styles.buttonText}>Histórico</Text>
+          </TouchableOpacity>
+        </View>
+      </ImageBackground>
+    </ScrollView>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  background: {
+  scroll: {
+    flexGrow: 1,
+  },
+  container: {
     flex: 1,
     width: '100%',
     height: '100%',
@@ -50,47 +67,75 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 30,
-    backgroundColor: 'rgba(0, 0, 0, 0.4)', // leve escurecimento para contraste
+    paddingHorizontal: 20,
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+  },
+  overlayDesktop: {
+    paddingHorizontal: 80,
   },
   title: {
-    fontSize: 32,
+    fontSize: 28,
     fontWeight: 'bold',
     color: '#FFD700',
-    marginBottom: 15,
+    marginBottom: 10,
     textAlign: 'center',
   },
-  subtitle: {
-    fontSize: 18,
-    color: '#fff',
-    marginBottom: 40,
-    textAlign: 'center',
-  },
-  button: {
-    backgroundColor: '#d5241c',
-    paddingVertical: 15,
-    paddingHorizontal: 50,
-    borderRadius: 30,
-    marginBottom: 20,
-    width: '25%',
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#ffffff',
-    fontWeight: 'bold',
+  titleDesktop: {
+    fontSize: 40,
   },
   coin: {
     width: 80,
     height: 80,
     marginBottom: 30,
   },
-  Image: {
-      position: 'absolute',
-      top: '0%',
-      transform: [{ translateY: -40 }], // centraliza verticalmente (ajuste o valor)
-      width: 1550,
-      height: 800,
-    },
+  button: {
+    backgroundColor: '#d5241c',
+    paddingVertical: 12,
+    paddingHorizontal: 50,
+    borderRadius: 25,
+    marginBottom: 12,
+    width: '70%',
+    alignItems: 'center',
+  },
+  buttonDesktop: {
+    width: 400,
+  },
+  buttonText: {
+    color: '#ffffff',
+    fontWeight: 'bold',
+  },
+  // Image: {
+  //   position: 'absolute',
+  //   top: 0,
+  //   transform: [{ translateY: -40 }],
+  //   width: '100%',
+  //   height: undefined,
+  //   aspectRatio: 3 / 2,
+  //   resizeMode: 'cover',
+  //   zIndex: -1,
+  // },
+  soundIcon: {
+    position: 'absolute',
+    top: 40,
+    right: 30,
+    zIndex: 5,
+  },
+  soundIconDesktop: {
+    position: 'absolute',
+    top: 40,
+    right: 40,
+    zIndex: 5,
+  },
+  backIcon: {
+    position: 'absolute',
+    top: 40,
+    left: 30,
+    zIndex: 5,
+  },
+  backIconDesktop: {
+    position: 'absolute',
+    top: 40,
+    right: 40,
+    zIndex: 5,
+  },
 });
-
-export default StartScreen;
