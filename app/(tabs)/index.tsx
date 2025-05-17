@@ -5,6 +5,7 @@ import { useNavigation, useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {TextInput, TouchableOpacity, ImageBackground, Image, View, Text, StyleSheet, useWindowDimensions, ScrollView} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import axios from 'axios';
 
 export default function App() {
   // navegação entre telas:
@@ -16,16 +17,36 @@ export default function App() {
   const [senha, setSenha] = useState('');
 
   // função de login 
-  const handleCadastro = () => {
-    // lógica do login
-    if (!nickname || !senha) {
+  const handleCadastro = async () => {
+  if (!nickname || !senha) {
     alert('Preencha todos os campos!');
     return;
-    }
-    console.log('Nickname:', nickname);
-    console.log('Senha:', senha);
+  }
+
+  try {
+    const response = await axios.post('http://192.168.15.1:5000/login', {
+      nickname,
+      senha
+    });
+
+    const { access_token, ID_usuario, nickname: nomeUsuario } = response.data;
+
+    // Salve o token localmente para uso futuro (ex: rotas protegidas)
+    // Pode usar AsyncStorage ou contexto global (Ex: Context API ou Redux)
+    console.log('Token JWT:', access_token);
+
+    // Navega para a tela principal
     router.push('../(tabs)/HomeScreen/');
-  };
+
+  } catch (error: any) {
+    if (error.response && error.response.status === 401) {
+      alert('Nickname ou senha inválidos!');
+    } else {
+      alert('Erro ao fazer login. Tente novamente.');
+      console.error(error);
+    }
+  }
+};
 
   //vai para a tela de cadastro de usuário
   const handleIrParaCadastro = () => {

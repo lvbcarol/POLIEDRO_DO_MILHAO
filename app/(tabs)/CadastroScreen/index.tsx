@@ -23,14 +23,33 @@ export default function CadastroScreen() {
   const [nickname, setNickname] = useState('');
   const [senha, setSenha] = useState('');
 
-  const handleFinalizarCadastro = () => {
-    // Aqui você pode implementar a lógica de salvar os dados do usuário
-    console.log('Cadastro realizado com sucesso:');
-    console.log({ nomeCompleto, email, nickname, senha });
+  const handleFinalizarCadastro = async () => {
+  try {
+    const response = await fetch('http://192.168.15.1:5000/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        nickname,
+        senha,
+      }),
+    });
 
-    // Redireciona para a HomeScreen após o cadastro
-    router.push('../(tabs)/HomeScreen/');
-  };
+    const data = await response.json();
+
+    if (response.ok) {
+      alert('Cadastro realizado com sucesso!');
+      router.push('../(tabs)/HomeScreen/');
+    } else {
+      alert(data.message || 'Erro ao cadastrar.');
+    }
+  } catch (error) {
+    console.error('Erro na requisição:', error);
+    alert('Erro ao conectar com o servidor.');
+  }
+};
+
 
   return (
     <ScrollView contentContainerStyle={styles.scroll}>
@@ -56,13 +75,13 @@ export default function CadastroScreen() {
           
           <Text style={[styles.subtitle, width > 768 && styles.subtitleDesktop]}>CADASTRO USUÁRIO</Text>
 
-          <TextInput
+          {/* <TextInput
             style={[styles.input, width > 768 && styles.inputDesktop]}
             placeholder="Email"
             placeholderTextColor="#fff"
             onChangeText={setEmail}
             value={email}
-          />
+          /> */}
           <TextInput
             style={[styles.input, width > 768 && styles.inputDesktop]}
             placeholder="Nickname"
