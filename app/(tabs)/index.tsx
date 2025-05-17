@@ -1,11 +1,13 @@
 //import { Dimensions } from 'react-native';
 //const { width, height } = Dimensions.get('window');
 //import { StatusBar } from 'expo-status-bar';
-import { useNavigation, useRouter } from 'expo-router';
-import React, { useState } from 'react';
-import {TextInput, TouchableOpacity, ImageBackground, Image, View, Text, StyleSheet, useWindowDimensions, ScrollView} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
+import { Audio } from 'expo-av';
+import { useRouter } from 'expo-router';
+import React, { useState } from 'react';
+import { Image, ImageBackground, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, useWindowDimensions, View } from 'react-native';
+
 
 export default function App() {
   // navegação entre telas:
@@ -53,6 +55,37 @@ export default function App() {
     router.push('../../(tabs)/CadastroScreen/'); 
   };
   
+  const [sound, setSound] = useState<Audio.Sound | null>(null);
+const [isPlaying, setIsPlaying] = useState(false);
+
+const playSound = async () => {
+  try {
+    if (sound && isPlaying) {
+      await sound.stopAsync();
+      await sound.unloadAsync();
+      setSound(null);
+      setIsPlaying(false);
+    } else {
+      const { sound: newSound } = await Audio.Sound.createAsync(
+        require('../../assets/sound/brain-implant-cyberpunk-sci-fi-trailer-action-intro-330416.mp3')
+      );
+      setSound(newSound);
+      setIsPlaying(true);
+      await newSound.playAsync();
+
+      // Quando terminar, resetar o estado
+      newSound.setOnPlaybackStatusUpdate((status) => {
+        if (!status.isLoaded) return;
+        if (status.didJustFinish) {
+          setIsPlaying(false);
+          setSound(null);
+        }
+      });
+    }
+  } catch (error) {
+    console.log('Erro ao alternar o som:', error);
+  }
+};
 
   return (
     <ScrollView contentContainerStyle={styles.scroll}>
@@ -62,10 +95,13 @@ export default function App() {
         style={styles.container}
         resizeMode="cover"
       > 
-        {/* Ícone de som */}
-        <TouchableOpacity style={[styles.soundIcon, width > 768 && styles.soundIconDesktop]}>
+        <TouchableOpacity
+          style={[styles.soundIcon, width > 768 && styles.soundIconDesktop]}
+          onPress={playSound}
+>
           <Ionicons name="volume-high" size={30} color="white" />
         </TouchableOpacity>
+
 
         {/* largura maior que 768 ativa um estilo para 'desktop' */}
         <View style={[styles.overlay, width > 768 && styles.overlayDesktop]}>
