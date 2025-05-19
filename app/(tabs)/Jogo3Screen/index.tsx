@@ -1,14 +1,11 @@
-import { Dimensions } from 'react-native';
-const { width, height } = Dimensions.get('window');
-import { useRouter } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { TouchableOpacity, ImageBackground, View, Text, StyleSheet, useWindowDimensions, ScrollView, Image } from 'react-native';
+import {TouchableOpacity, ImageBackground,View,Text,StyleSheet,useWindowDimensions,ScrollView,Image,} from 'react-native';
+import { useRouter } from 'expo-router';
 
 export default function QuizScreen() {
   const router = useRouter();
   const { width } = useWindowDimensions();
-  
+
   // Dados simulados
   const question = "3 Qual é a capital do Brasil?";
   const alternatives = [
@@ -22,48 +19,53 @@ export default function QuizScreen() {
   return (
     <ScrollView contentContainerStyle={styles.scroll}>
       <ImageBackground
-        source={require('../../../assets/images/TelaAzul.png')} 
+        source={require('../../../assets/images/TelaAzul.png')}
         style={styles.container}
         resizeMode="cover"
       >
         <View style={[styles.overlay, width > 768 && styles.overlayDesktop]}>
+          
           {/* Cabeçalho */}
           <View style={styles.titleRow}>
-            <Image source={require('../../../assets/images/Coin.png')} style={styles.coin}/>
-            <Text style={styles.title}>POLIEDRO{"\n"}DO MILHÃO</Text>  
+            <Image source={require('../../../assets/images/Coin.png')} style={styles.coin} />
+            <Text style={[styles.title, width > 768 && styles.titleDesktop]}>
+              POLIEDRO{"\n"}DO MILHÃO
+            </Text>
           </View>
-          
-          {/* Área da pergunta */}
+
+          {/* Pergunta */}
           <View style={styles.questionContainer}>
             <Text style={styles.questionText}>{question}</Text>
-            
-            {/* Alternativas */}
+
             <View style={styles.alternativesContainer}>
               {alternatives.map((alt, index) => (
-                <TouchableOpacity key={index} style={[styles.alternativeButton, width > 768 && styles.alternativeButtonDesktop]}>
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.alternativeButton,
+                    width > 768 && styles.alternativeButtonDesktop,
+                  ]}
+                >
                   <Text style={styles.alternativeText}>{alt}</Text>
                 </TouchableOpacity>
               ))}
             </View>
           </View>
-          
-          {/* Rodapé com controles */}
+
+          {/* Rodapé */}
           <View style={styles.footer}>
             <Text style={styles.prizeText}>VALENDO {currentPrize}</Text>
-            
+
             <View style={styles.controlsRow}>
               <TouchableOpacity style={styles.controlButton}>
                 <Text style={styles.controlText}>Pular</Text>
               </TouchableOpacity>
-              
               <TouchableOpacity style={styles.controlButton}>
                 <Text style={styles.controlText}>-2 Alternativas</Text>
               </TouchableOpacity>
-              
               <TouchableOpacity style={styles.controlButton}>
                 <Text style={styles.controlText}>Parar</Text>
               </TouchableOpacity>
-              
               <TouchableOpacity style={styles.controlButton}>
                 <Text style={styles.controlText}>Dica</Text>
               </TouchableOpacity>
@@ -76,13 +78,13 @@ export default function QuizScreen() {
 }
 
 const styles = StyleSheet.create({
+  scroll: {
+    flexGrow: 1,
+  },
   container: {
     flex: 1,
     width: '100%',
     height: '100%',
-  },
-  scroll: {
-    flexGrow: 1,
   },
   overlay: {
     flex: 1,
@@ -95,15 +97,28 @@ const styles = StyleSheet.create({
   overlayDesktop: {
     paddingHorizontal: 80,
   },
+  titleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  coin: {
+    width: 80,
+    height: 80,
+    resizeMode: 'contain',
+    marginBottom: 0,
+    marginRight: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
     textAlign: 'center',
     color: '#FFD700',
-    marginBottom: 0,
   },
   titleDesktop: {
-    fontSize: 40,
+    fontSize: 28,
   },
   questionContainer: {
     width: '100%',
@@ -117,8 +132,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 30,
     textShadowColor: 'rgba(0, 0, 0, 0.75)',
-    textShadowOffset: {width: -1, height: 1},
-    textShadowRadius: 10
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 10,
   },
   alternativesContainer: {
     width: '100%',
@@ -150,13 +165,12 @@ const styles = StyleSheet.create({
     color: '#FFD700',
     marginBottom: 20,
     textShadowColor: 'rgba(0, 0, 0, 0.75)',
-    textShadowOffset: {width: -1, height: 1},
-    textShadowRadius: 10
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 10,
   },
   controlsRow: {
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center',
     flexWrap: 'wrap',
     gap: 10,
   },
@@ -166,30 +180,11 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 20,
     minWidth: 100,
+    margin: 5,
   },
   controlText: {
     color: '#FFF',
     fontWeight: 'bold',
     textAlign: 'center',
-  },
-  lifeText: {
-    color: '#FF0000',
-    fontWeight: 'bold',
-    fontSize: 24,
-    marginHorizontal: 15,
-  },
-  titleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  coin: {
-    width: 80,
-    height: 80,
-    resizeMode: 'contain',
-    marginBottom: 0,
-    marginRight: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });

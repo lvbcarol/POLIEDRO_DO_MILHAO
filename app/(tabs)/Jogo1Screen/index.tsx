@@ -1,14 +1,5 @@
 import React from 'react';
-import {
-  TouchableOpacity,
-  ImageBackground,
-  View,
-  Text,
-  StyleSheet,
-  useWindowDimensions,
-  ScrollView,
-  Image,
-} from 'react-native';
+import {TouchableOpacity, ImageBackground,View,Text,StyleSheet,useWindowDimensions,ScrollView,Image,} from 'react-native';
 import { useRouter } from 'expo-router';
 
 export default function QuizScreen() {
