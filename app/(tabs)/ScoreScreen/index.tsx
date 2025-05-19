@@ -1,4 +1,4 @@
-import React from 'react';
+/*import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image, Dimensions, ImageBackground } from 'react-native';
 import { useRouter } from 'expo-router';
 
@@ -114,4 +114,57 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PontuacaoScreen;
+export default PontuacaoScreen;*/
+
+/*comentei a tela que vcs tinham feito e substitui por essa que está com as rotas do back, 
+mas se não rodar pode voltar para o original tirando estes comentários, mas acredito que esteja certo*/
+
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useRouter } from 'expo-router';
+
+export default function ScoreScreen() {
+  const router = useRouter();
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Fim de Jogo</Text>
+      <Text style={styles.subtitle}>Obrigado por jogar!</Text>
+      <TouchableOpacity style={styles.button} onPress={() => router.push('/')}>
+        <Text style={styles.buttonText}>Voltar ao Início</Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#002244',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 24,
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#FFD700',
+    marginBottom: 16,
+  },
+  subtitle: {
+    fontSize: 20,
+    color: '#FFF',
+    marginBottom: 32,
+  },
+  button: {
+    backgroundColor: '#FFD700',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+  },
+  buttonText: {
+    color: '#002244',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+});
