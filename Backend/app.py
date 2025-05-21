@@ -5,13 +5,12 @@ app = Flask(__name__)
 
 # Criação do banco (apenas uma vez)
 def criar_tabela():
-    conn = sqlite3.connect('usuarios.db')
+    conn = sqlite3.connect('quizDB.db')
     cursor = conn.cursor()
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS usuarios (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nome TEXT NOT NULL,
-            email TEXT NOT NULL,
+            ID_usuario INTEGER PRIMARY KEY AUTOINCREMENT,
+            nickname TEXT NOT NULL,
             senha TEXT NOT NULL
         )
     ''')
@@ -25,20 +24,19 @@ criar_tabela()
 def cadastrar_usuario():
     dados = request.get_json()
 
-    nome = dados.get('nome')
-    email = dados.get('email')
+    nickname = dados.get('nickname')
     senha = dados.get('senha')
 
-    if not nome or not email or not senha:
+    if not nickname or not senha:
         return jsonify({'mensagem': 'Dados incompletos'}), 400
 
     try:
         conn = sqlite3.connect('usuarios.db')
         cursor = conn.cursor()
         cursor.execute('''
-            INSERT INTO usuarios (nome, email, senha)
-            VALUES (?, ?, ?)
-        ''', (nome, email, senha))
+            INSERT INTO usuarios (nickname, senha)
+            VALUES (?, ?)
+        ''', (nickname, senha))
         conn.commit()
         conn.close()
 
