@@ -1,54 +1,72 @@
-import { Dimensions } from 'react-native';
+//import { Dimensions } from 'react-native';
 //const { width, height } = Dimensions.get('window');
-import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
-import {
-  TextInput,
-  TouchableOpacity,
-  ImageBackground,
-  Image,
-  View,
-  Text,
-  StyleSheet,
-  useWindowDimensions,
-  ScrollView,
-} from 'react-native';
+//import { useRouter } from 'expo-router';
+//import React, { useState } from 'react';
+import {TextInput,TouchableOpacity,ImageBackground,Image,View,Text,StyleSheet,useWindowDimensions,ScrollView,Alert} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
+// export default function CadastroScreen() {
+//   const router = useRouter();
+//   const { width } = useWindowDimensions();
+//   const [nomeCompleto, setNomeCompleto] = useState('');
+//   const [email, setEmail] = useState('');
+//   const [nickname, setNickname] = useState('');
+//   const [senha, setSenha] = useState('');
+
+//   const handleFinalizarCadastro = async () => {
+//   try {
+//     const response = await fetch('http://192.168.15.1:5000/register', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify({
+//         nickname,
+//         senha,
+//       }),
+//     });
+
+//     const data = await response.json();
+
+//     if (response.ok) {
+//       alert('Cadastro realizado com sucesso!');
+//       router.push('../(tabs)/HomeScreen/');
+//     } else {
+//       alert(data.message || 'Erro ao cadastrar.');
+//     }
+//   } catch (error) {
+//     console.error('Erro na requisição:', error);
+//     alert('Erro ao conectar com o servidor.');
+//   }
+// };
+
+import React, { useState } from 'react';
+//import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet } from 'react-native';
+import { useRouter } from 'expo-router';
+import api from '../../services/api';
+
 export default function CadastroScreen() {
-  const router = useRouter();
-  const { width } = useWindowDimensions();
-  const [nomeCompleto, setNomeCompleto] = useState('');
-  const [email, setEmail] = useState('');
   const [nickname, setNickname] = useState('');
   const [senha, setSenha] = useState('');
+  const router = useRouter();
+  const { width } = useWindowDimensions();
 
   const handleFinalizarCadastro = async () => {
-  try {
-    const response = await fetch('http://192.168.15.1:5000/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+    try {
+      const response = await api.post('/cadastro', {
         nickname,
         senha,
-      }),
-    });
+      });
 
-    const data = await response.json();
-
-    if (response.ok) {
-      alert('Cadastro realizado com sucesso!');
-      router.push('../(tabs)/HomeScreen/');
-    } else {
-      alert(data.message || 'Erro ao cadastrar.');
+      if (response.status === 201) {
+        Alert.alert('Sucesso', 'Cadastro realizado com sucesso!');
+        router.push('../(tabs)/HomeScreen/');
+      } 
+    } catch (error) {
+      console.error('Erro no cadastro:', error);
+      Alert.alert('Erro', 'Não foi possível realizar o cadastro.');
     }
-  } catch (error) {
-    console.error('Erro na requisição:', error);
-    alert('Erro ao conectar com o servidor.');
-  }
-};
+  };
 
 
   return (
